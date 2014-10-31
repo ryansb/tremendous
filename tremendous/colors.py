@@ -1,34 +1,54 @@
+from functools import partial
+
+from tremendous.api import apply_format
 from tremendous.bindings import lib as __lib
 
+colors_16 = dict(
+    bold=__lib.BOLD,
+    italic=__lib.ITALIC,
+    under=__lib.UNDER,
+    under2=__lib.UNDER2,
+    strike=__lib.STRIKE,
+    blink=__lib.BLINK,
+    flip=__lib.FLIP,
+    black=__lib.BLACK,
+    red=__lib.RED,
+    green=__lib.GREEN,
+    yellow=__lib.YELLOW,
+    blue=__lib.BLUE,
+    magenta=__lib.MAGENTA,
+    cyan=__lib.CYAN,
+    white=__lib.WHITE,
+    hblack=__lib.HBLACK,
+    hred=__lib.HRED,
+    hgreen=__lib.HGREEN,
+    hyellow=__lib.HYELLOW,
+    hblue=__lib.HBLUE,
+    hmagenta=__lib.HMAGENTA,
+    hcyan=__lib.HCYAN,
+    hwhite=__lib.HWHITE,
+    bgblack=__lib.BGBLACK,
+    bgred=__lib.BGRED,
+    bggreen=__lib.BGGREEN,
+    bgyellow=__lib.BGYELLOW,
+    bgblue=__lib.BGBLUE,
+    bgmagenta=__lib.BGMAGENTA,
+    bgcyan=__lib.BGCYAN,
+    bgwhite=__lib.BGWHITE,
+)
 
-BOLD = __lib.BOLD
-ITALIC = __lib.ITALIC
-UNDER = __lib.UNDER
-UNDER2 = __lib.UNDER2
-STRIKE = __lib.STRIKE
-BLINK = __lib.BLINK
-FLIP = __lib.FLIP
-BLACK = __lib.BLACK
-RED = __lib.RED
-GREEN = __lib.GREEN
-YELLOW = __lib.YELLOW
-BLUE = __lib.BLUE
-MAGENTA = __lib.MAGENTA
-CYAN = __lib.CYAN
-WHITE = __lib.WHITE
-HBLACK = __lib.HBLACK
-HRED = __lib.HRED
-HGREEN = __lib.HGREEN
-HYELLOW = __lib.HYELLOW
-HBLUE = __lib.HBLUE
-HMAGENTA = __lib.HMAGENTA
-HCYAN = __lib.HCYAN
-HWHITE = __lib.HWHITE
-BGBLACK = __lib.BGBLACK
-BGRED = __lib.BGRED
-BGGREEN = __lib.BGGREEN
-BGYELLOW = __lib.BGYELLOW
-BGBLUE = __lib.BGBLUE
-BGMAGENTA = __lib.BGMAGENTA
-BGCYAN = __lib.BGCYAN
-BGWHITE = __lib.BGWHITE
+__funcs = {}
+# This is also gross. Sorry.
+for k, v in colors_16.items():
+    if k.startswith('h'):
+        __funcs['highlight_' + k[1:]] = partial(apply_format, v)
+        __funcs['hi_' + k[1:]] = partial(apply_format, v)
+        __funcs['hl_' + k[1:]] = partial(apply_format, v)
+    elif k.startswith('bg'):
+        __funcs['background_' + k[1:]] = partial(apply_format, v)
+        __funcs['bg_' + k[2:]] = partial(apply_format, v)
+    elif k.startswith('under'):
+        __funcs[k] = partial(apply_format, v)
+        __funcs['underline' + k[5:]] = partial(apply_format, v)
+    else:
+        __funcs[k] = partial(apply_format, v)
