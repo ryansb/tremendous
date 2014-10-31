@@ -1,5 +1,6 @@
 from tremendous.api import (
-    apply_format
+    apply_format,
+    apply_formats,
 )
 
 # this is gross, but I promise there's nothing weird going on
