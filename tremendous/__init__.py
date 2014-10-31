@@ -1,8 +1,4 @@
-from tremendous.api import (
-    apply_format,
-    apply_formats,
-)
+from tremendous.colors import __funcs
 
-# this is gross, but I promise there's nothing weird going on
-# in colors.py
-from tremendous.colors import *
+# This is gross. Sorry.
+globals().update(__funcs)
