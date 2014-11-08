@@ -17,5 +17,5 @@ print bold(red("Bad things happened!"))
 
 # 256 colors are available from tremendous.ext
 from tremendous.ext import darkgreen
-print darkgreen("Crisis averted"))
+print darkgreen("Crisis averted")
 ```
