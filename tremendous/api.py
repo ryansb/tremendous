@@ -2,12 +2,12 @@ from tremendous.bindings import lib
 from tremendous.bindings import ffi
 
 
-def apply_format(color, body):
+def apply_color(color, body):
     try:
-        s = lib.apply_format(color, body)
+        s = lib.apply_color(color, body)
         return ffi.string(s)
     except:
-        s = lib.apply_format(color, bytes(body, 'utf-8'))
+        s = lib.apply_color(color, bytes(body, 'utf-8'))
         return ffi.string(s).decode('utf-8')
 
 

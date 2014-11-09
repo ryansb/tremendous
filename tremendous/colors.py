@@ -1,7 +1,7 @@
 from functools import partial
 
 from tremendous.api import (
-    apply_format,
+    apply_color,
     apply_256,
     apply_256_bg,
     apply_256_hl,
@@ -47,17 +47,17 @@ __funcs = {}
 # This is also gross. Sorry.
 for k, v in colors_16.items():
     if k.startswith('h'):
-        __funcs['highlight_' + k[1:]] = partial(apply_format, v)
-        __funcs['hi_' + k[1:]] = partial(apply_format, v)
-        __funcs['hl_' + k[1:]] = partial(apply_format, v)
+        __funcs['highlight_' + k[1:]] = partial(apply_color, v)
+        __funcs['hi_' + k[1:]] = partial(apply_color, v)
+        __funcs['hl_' + k[1:]] = partial(apply_color, v)
     elif k.startswith('bg'):
-        __funcs['background_' + k[1:]] = partial(apply_format, v)
-        __funcs['bg_' + k[2:]] = partial(apply_format, v)
+        __funcs['background_' + k[1:]] = partial(apply_color, v)
+        __funcs['bg_' + k[2:]] = partial(apply_color, v)
     elif k.startswith('under'):
-        __funcs[k] = partial(apply_format, v)
-        __funcs['underline' + k[5:]] = partial(apply_format, v)
+        __funcs[k] = partial(apply_color, v)
+        __funcs['underline' + k[5:]] = partial(apply_color, v)
     else:
-        __funcs[k] = partial(apply_format, v)
+        __funcs[k] = partial(apply_color, v)
 
 
 extended_colors = {
