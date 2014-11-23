@@ -1,12 +1,20 @@
 PREFIX := /usr/local
-CFLAGS := -I./include
-CFLAGS += -std=c99 -Wall -Wextra -fPIC -pedantic
+
+CPPFLAGS := -I./include
+CPPFLAGS += $(shell pkg-config --cflags-only-I MagickWand)
+
+CFLAGS := -std=c99 -Wall -Wextra -fPIC -pedantic
+
 ifeq ($(CC),gcc)
     CFLAGS += -ggdb3
 endif
 ifeq ($(CC),clang)
-    CFLAGS += -ggdb -Weverything
+    CFLAGS += -Qunused-arguments -ggdb -Weverything
 endif
+
+CFLAGS += $(shell pkg-config --cflags-only-other MagickWand)
+
+LIBRARIES := $(shell pkg-config --libs MagickWand)
 
 AR=ar
 ARFLAGS=rvs
@@ -15,22 +23,23 @@ SOURCE := $(wildcard src/*.c)
 
 all: libfab.a libfab.so
 
-.PHONY: shared
-libfab.so: fab.o
-	$(CC) -shared -o libfab.so fab.o
-libfab.a: fab.o
-	$(AR) $(ARFLAGS) libfab.a fab.o
+libfab.so: fab.o buffer.o
+	$(CC) -shared -o libfab.so fab.o buffer.o $(LIBRARIES)
+
+libfab.a: fab.o buffer.o
+	$(AR) $(ARFLAGS) libfab.a fab.o buffer.o
+
+buffer.o: src/buffer.c
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) src/buffer.c
+
 fab.o: src/fab.c
-	$(CC) -c $(CFLAGS) $(INCLUDE) $(SOURCE)
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) src/fab.c
 
 .PHONY: install
 install:
-	cp libfab.a $(PREFIX)/lib/
-	chown root $(PREFIX)/lib/libfab.a
-	chmod 0755 $(PREFIX)/lib/libfab.a
-	cp include/fab.h $(PREFIX)/include/
-	chown root $(PREFIX)/include/fab.h
-	chmod 0755 $(PREFIX)/include/fab.h
+	install -m 0755 libfab.a $(PREFIX)/lib
+	install -m 0755 libfab.so $(PREFIX)/lib
+	install -m 0755 include/fab.h $(PREFIX)/include
 
 .PHONY: clean
 clean:
