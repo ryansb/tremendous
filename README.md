@@ -19,3 +19,8 @@ print bold(red("Bad things happened!"))
 from tremendous.ext import darkgreen
 print darkgreen("Crisis averted")
 ```
+
+# Dependencies
+
+tremendous depends on the development headers for ImageMagick. On fedora, you
+can find these in the `ImageMagick-devel` package.
