@@ -14,4 +14,10 @@ with open(path.join(__clib_dir, 'include/fab.h')) as header:
     ffi.cdef('\n'.join(decls))
 
 with open(path.join(__clib_dir, "src/fab.c")) as cfile:
-    lib = ffi.verify(cfile.read(), include_dirs=[path.join(__clib_dir, 'include')])
+    lib = ffi.verify(
+        cfile.read(),
+        include_dirs=[
+            path.join(__clib_dir, 'include'),
+            '/usr/include/ImageMagick-6'
+        ]
+    )
