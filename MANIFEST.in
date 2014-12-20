@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include requirements.txt
+include tremendous/libfab/include/fab.h
+include tremendous/libfab/src/fab.c
+include tremendous/libfab/LICENSE
+include tremendous/libfab/Makefile
+include tremendous/libfab/README.md
+include tremendous/libfab/Tupfile
